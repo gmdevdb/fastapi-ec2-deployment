@@ -1,6 +1,7 @@
-- name: Install required packages
+- name: Install required system packages
   apt:
     name:
+      - python3-venv
       - python3-pip
       - tmux
     update_cache: yes
@@ -16,10 +17,16 @@
     - main.py
     - requirements.txt
 
-- name: Install Python packages from requirements.txt
-  pip:
-    requirements: /home/ubuntu/requirements.txt
+- name: Create a Python virtual environment
+  command: python3 -m venv /home/ubuntu/fastapi-venv
+  args:
+    creates: /home/ubuntu/fastapi-venv
 
-- name: Start FastAPI with Uvicorn in tmux session
-  shell: tmux new-session -d 'uvicorn main:app --host 0.0.0.0 --port 8000'
+- name: Install Python packages in the virtual environment
+  shell: /home/ubuntu/fastapi-venv/bin/pip install -r /home/ubuntu/requirements.txt
+  args:
+    executable: /bin/bash
+
+- name: Run FastAPI with Uvicorn in a tmux session
+  shell: tmux new-session -d '/home/ubuntu/fastapi-venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000'
 
