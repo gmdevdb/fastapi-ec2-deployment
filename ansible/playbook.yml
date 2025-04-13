@@ -1,0 +1,6 @@
+- name: Deploy FastAPI App on EC2
+  hosts: web
+  become: true
+  roles:
+    - fastapi
+

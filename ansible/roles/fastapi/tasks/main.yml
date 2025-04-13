@@ -1,0 +1,25 @@
+- name: Install required packages
+  apt:
+    name:
+      - python3-pip
+      - tmux
+    update_cache: yes
+
+- name: Copy FastAPI files to EC2
+  copy:
+    src: "{{ item }}"
+    dest: "/home/ubuntu/"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
+  loop:
+    - main.py
+    - requirements.txt
+
+- name: Install Python packages from requirements.txt
+  pip:
+    requirements: /home/ubuntu/requirements.txt
+
+- name: Start FastAPI with Uvicorn in tmux session
+  shell: tmux new-session -d 'uvicorn main:app --host 0.0.0.0 --port 8000'
+
