@@ -45,10 +45,10 @@ data "aws_vpc" "default" {
 }
 
 resource "aws_instance" "fastapi_ec2" {
-  ami                         = "ami-0c02fb55956c7d316" # Ubuntu 20.04 (us-east-1)
-  instance_type               = var.instance_type
-  key_name                    = var.key_name
-  vpc_security_group_ids      = [aws_security_group.fastapi_sg.id]
+  ami           = "ami-084568db4383264d4"  # ✅ Ubuntu 24.04 (us-east-1)
+  instance_type = var.instance_type
+  key_name      = var.key_name
+  vpc_security_group_ids = [aws_security_group.fastapi_sg.id]
 
   tags = {
     Name = "FastAPI-EC2"
@@ -56,3 +56,4 @@ resource "aws_instance" "fastapi_ec2" {
 
   associate_public_ip_address = true
 }
+
